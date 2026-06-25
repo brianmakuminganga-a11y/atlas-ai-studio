@@ -1,1 +1,24 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0B0B0F;
+  --bg-elev: #14141A;
+  --bg-card: #1A1A22;
+  --border: #2A2A35;
+  --primary: #F5F2E8;
+  --muted: #9A9AA5;
+  --dim: #6E6E78;
+  --accent: #F5A623;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { min-height: 100vh; }
