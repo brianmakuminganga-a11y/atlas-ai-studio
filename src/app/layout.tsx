@@ -1,12 +1,30 @@
-export const metadata = {
-  title: 'Atlas AI Studio — by Ng\'ang\'a Makumi',
-  description: 'Africa\'s Most Majestic AI Generation Studio',
+import type { Metadata, Viewport } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+
+const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
+const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
+
+export const metadata: Metadata = {
+  title: 'Atlas AI Studio — Generate Anything',
+  description: 'AI image generation studio by Ng\'ang\'a Makumi',
+  manifest: '/manifest.json',
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0B0B0F',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body style={{ margin: 0, background: '#0B0B0F', color: '#F5F2E8', fontFamily: 'system-ui, sans-serif' }}>
+    <html lang="en" suppressHydrationWarning>
+      <head><link rel="manifest" href="/manifest.json" /></head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
