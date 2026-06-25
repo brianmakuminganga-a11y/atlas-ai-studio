@@ -1,0 +1,16 @@
+node_modules
+.next
+.git
+upload
+tool-results
+skills
+examples
+mini-services
+download
+*.log
+dev.log
+server.log
+db/*.db
+db/*.db-journal
+.zscripts
+.env.local
