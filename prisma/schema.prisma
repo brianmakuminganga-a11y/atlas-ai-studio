@@ -1,0 +1,103 @@
+// Atlas AI Studio — Prisma schema
+// Owner: Ng'ang'a 
+
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  email           String?  @unique
+  phone           String?  @unique
+  name            String?
+  country         String?
+  role            String   @default("user")
+  credits         Int      @default(3)
+  tier            String   @default("free")
+  tierExpiresAt   DateTime?
+  referralCode    String?  @unique
+  referredBy      String?
+  referralsCount  Int      @default(0)
+  deviceFingerprints String @default("[]")
+  passwordHash    String?
+  image           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  generations Generation[]
+  payments    Payment[]
+  otps        OtpCode[]
+
+  @@index([phone])
+  @@index([email])
+}
+
+model Generation {
+  id              String   @id @default(cuid())
+  userId          String
+  prompt          String
+  enhancedPrompt  String?
+  style           String
+  size            String
+  frameCount      Int      @default(1)
+  frames          String   @default("[]")
+  isWatermarked   Boolean  @default(false)
+  country         String?
+  ip              String?
+  createdAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Payment {
+  id              String   @id @default(cuid())
+  userId          String
+  amount          Float
+  currency        String
+  tier            String
+  imagesIncluded  Int
+  provider        String
+  providerRef     String?
+  status          String   @default("pending")
+  phoneNumber     String?
+  createdAt       DateTime @default(now())
+  completedAt     DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  userId    String?
+  phone     String
+  code      String
+  purpose   String
+  consumed  Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([phone])
+  @@index([code])
+}
+
+model AdminEvent {
+  id        String   @id @default(cuid())
+  type      String
+  actorId   String?
+  detail    String
+  createdAt DateTime @default(now())
+}
